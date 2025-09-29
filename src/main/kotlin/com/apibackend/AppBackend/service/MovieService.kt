@@ -1,49 +1,93 @@
 package com.apibackend.AppBackend.service
 
-import com.apibackend.AppBackend.dto.FormatDto
-import com.apibackend.AppBackend.dto.GenreDto
+import com.apibackend.AppBackend.dto.CreateMovieDto
 import com.apibackend.AppBackend.dto.MovieDto
-import com.apibackend.AppBackend.model.Format
-import com.apibackend.AppBackend.model.Genre
-import com.apibackend.AppBackend.model.Movie
+import com.apibackend.AppBackend.dto.UpdateMovieDto
+import com.apibackend.AppBackend.mapper.MovieMapper
 import com.apibackend.AppBackend.model.MovieStatus
+import com.apibackend.AppBackend.repository.FormatRepository
+import com.apibackend.AppBackend.repository.GenreRepository
 import com.apibackend.AppBackend.repository.MovieRepository
+import java.time.OffsetDateTime
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class MovieService(private val movieRepository: MovieRepository) {
+@Transactional
+class MovieService(
+        private val movieRepository: MovieRepository,
+        private val genreRepository: GenreRepository,
+        private val formatRepository: FormatRepository,
+        private val movieMapper: MovieMapper
+) {
 
     fun getAllActiveMovies(): List<MovieDto> {
-        return movieRepository.findAllActiveWithGenresAndFormats().map { it.toDto() }
+        return movieMapper.moviesToDtos(movieRepository.findAllActiveWithGenresAndFormats())
     }
 
     fun getMoviesByStatus(status: MovieStatus): List<MovieDto> {
-        return movieRepository.findByStatusWithGenresAndFormats(status).map { it.toDto() }
+        return movieMapper.moviesToDtos(movieRepository.findByStatusWithGenresAndFormats(status))
     }
 
-    private fun Movie.toDto(): MovieDto {
-        return MovieDto(
-                id = this.id,
-                title = this.title,
-                synopsis = this.synopsis,
-                durationMin = this.durationMin,
-                releaseDate = this.releaseDate,
-                status = this.status,
-                posterUrl = this.posterUrl,
-                trailerUrl = this.trailerUrl,  
-                ratingAvg = this.ratingAvg,
-                ratingCount = this.ratingCount,
-                genres = this.genres.map { it.toDto() },
-                formats = this.formats.map { it.toDto() }
-        )
+    fun getMovieById(id: Long): MovieDto? {
+        return movieRepository.findByIdWithGenresAndFormats(id)?.let { movieMapper.movieToDto(it) }
     }
 
-    private fun Genre.toDto(): GenreDto {
-        return GenreDto(id = this.id, name = this.name, slug = this.slug)
-    } 
+    fun createMovie(createDto: CreateMovieDto): MovieDto {
+        val genres = genreRepository.findAllById(createDto.genreIds).toSet()
+        val formats = formatRepository.findAllById(createDto.formatIds).toSet()
 
-    private fun Format.toDto(): FormatDto {
-        return FormatDto(id = this.id, code = this.code, label = this.label)
+        val movie =
+                movieMapper
+                        .createDtoToMovie(createDto)
+                        .copy(
+                                genres = genres,
+                                formats = formats,
+                                createdAt = OffsetDateTime.now(),
+                                updatedAt = OffsetDateTime.now()
+                        )
+
+        val savedMovie = movieRepository.save(movie)
+        return movieMapper.movieToDto(savedMovie)
+    }
+
+    fun updateMovie(id: Long, updateDto: UpdateMovieDto): MovieDto? {
+        val existingMovie = movieRepository.findByIdOrNull(id) ?: return null
+
+        val genres =
+                updateDto.genreIds?.let { genreRepository.findAllById(it).toSet() }
+                        ?: existingMovie.genres
+        val formats =
+                updateDto.formatIds?.let { formatRepository.findAllById(it).toSet() }
+                        ?: existingMovie.formats
+
+        val updatedMovie =
+                existingMovie.copy(
+                        title = updateDto.title ?: existingMovie.title,
+                        synopsis = updateDto.synopsis ?: existingMovie.synopsis,
+                        durationMin = updateDto.durationMin ?: existingMovie.durationMin,
+                        releaseDate = updateDto.releaseDate ?: existingMovie.releaseDate,
+                        status = updateDto.status ?: existingMovie.status,
+                        posterUrl = updateDto.posterUrl ?: existingMovie.posterUrl,
+                        trailerUrl = updateDto.trailerUrl ?: existingMovie.trailerUrl,
+                        genres = genres,
+                        formats = formats,
+                        updatedAt = OffsetDateTime.now()
+                )
+
+        val savedMovie = movieRepository.save(updatedMovie)
+        return movieMapper.movieToDto(savedMovie)
+    }
+
+    fun deleteMovie(id: Long): Boolean {
+        val movie = movieRepository.findByIdOrNull(id) ?: return false
+        val deactivatedMovie = movie.copy(active = false, updatedAt = OffsetDateTime.now())
+        movieRepository.save(deactivatedMovie)
+        return true
+    }
+
+    fun getAllMovies(): List<MovieDto> {
+        return movieMapper.moviesToDtos(movieRepository.findAll())
     }
 }
- 

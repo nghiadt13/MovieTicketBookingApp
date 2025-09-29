@@ -4,7 +4,6 @@ import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.OffsetDateTime
-import com.apibackend.AppBackend.model.Format
 
 @Entity
 @Table(name = "movies")
@@ -22,7 +21,7 @@ data class Movie(
         @Column(name = "rating_avg", precision = 3, scale = 1)
         val ratingAvg: BigDecimal = BigDecimal.ZERO,
         @Column(name = "rating_count") val ratingCount: Int = 0,
-        @Column(name = "is_active") val isActive: Boolean = true,
+        @Column(name = "is_active") val active: Boolean = true,
         @Column(name = "created_at") val createdAt: OffsetDateTime = OffsetDateTime.now(),
         @Column(name = "updated_at") val updatedAt: OffsetDateTime = OffsetDateTime.now(),
         @ManyToMany(fetch = FetchType.LAZY)
@@ -38,7 +37,5 @@ data class Movie(
                 joinColumns = [JoinColumn(name = "movie_id")],
                 inverseJoinColumns = [JoinColumn(name = "format_id")]
         )
-        val formats: Set<Format> = emptySet() 
-
-        
+        val formats: Set<Format> = emptySet()
 )
