@@ -1,5 +1,7 @@
 package com.apibackend.AppBackend.model
 
+import org.hibernate.annotations.JdbcType
+import org.hibernate.dialect.PostgreSQLEnumJdbcType 
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -14,7 +16,8 @@ data class Movie(
         @Column(name = "duration_min") val durationMin: Short? = null,
         @Column(name = "release_date") val releaseDate: LocalDate? = null,
         @Enumerated(EnumType.STRING)
-        @Column(nullable = false)
+        @Column(name = "status", nullable = false)
+        @JdbcType(PostgreSQLEnumJdbcType::class) // <--- Thêm dòng này
         val status: MovieStatus = MovieStatus.COMING_SOON,
         @Column(name = "poster_url", columnDefinition = "TEXT") val posterUrl: String? = null,
         @Column(name = "trailer_url", columnDefinition = "TEXT") val trailerUrl: String? = null,

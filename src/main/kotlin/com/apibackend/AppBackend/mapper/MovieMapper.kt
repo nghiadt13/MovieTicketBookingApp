@@ -25,13 +25,13 @@ interface MovieMapper {
     fun moviesToDtos(movies: List<Movie>): List<MovieDto>
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "ratingAvg", ignore = true)
-    @Mapping(target = "ratingCount", ignore = true)
-    @Mapping(target = "active", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "genres", ignore = true)
-    @Mapping(target = "formats", ignore = true)
+    @Mapping(target = "ratingAvg", expression = "java(java.math.BigDecimal.ZERO)")
+    @Mapping(target = "ratingCount", constant = "0")
+    @Mapping(target = "active", constant = "true")
+    @Mapping(target = "createdAt", expression = "java(java.time.OffsetDateTime.now())")
+    @Mapping(target = "updatedAt", expression = "java(java.time.OffsetDateTime.now())")
+    @Mapping(target = "genres", expression = "java(new java.util.HashSet<com.apibackend.AppBackend.model.Genre>())")
+    @Mapping(target = "formats", expression = "java(new java.util.HashSet<com.apibackend.AppBackend.model.Format>())")
     fun createDtoToMovie(createDto: CreateMovieDto): Movie
 
     @Mapping(target = "id", ignore = true)
