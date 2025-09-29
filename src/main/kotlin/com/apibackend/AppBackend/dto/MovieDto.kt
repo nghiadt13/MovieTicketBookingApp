@@ -1,6 +1,9 @@
 package com.apibackend.AppBackend.dto
 
 import com.apibackend.AppBackend.model.MovieStatus
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.Size
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -20,8 +23,10 @@ data class MovieDto(
 )
 
 data class CreateMovieDto(
+        @field:NotBlank(message = "title must not be blank")
         val title: String,
         val synopsis: String? = null,
+        @field:Positive(message = "durationMin must be > 0")
         val durationMin: Short? = null,
         val releaseDate: LocalDate? = null,
         val status: MovieStatus = MovieStatus.COMING_SOON,
@@ -32,8 +37,10 @@ data class CreateMovieDto(
 )
 
 data class UpdateMovieDto(
+        @field:Size(min = 1, message = "title must not be empty when provided")
         val title: String? = null,
         val synopsis: String? = null,
+        @field:Positive(message = "durationMin must be > 0")
         val durationMin: Short? = null,
         val releaseDate: LocalDate? = null,
         val status: MovieStatus? = null,

@@ -8,6 +8,9 @@ import com.apibackend.AppBackend.model.MovieStatus
 import com.apibackend.AppBackend.repository.FormatRepository
 import com.apibackend.AppBackend.repository.GenreRepository
 import com.apibackend.AppBackend.repository.MovieRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import java.time.OffsetDateTime
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -88,6 +91,25 @@ class MovieService(
     }
 
     fun getAllMovies(): List<MovieDto> {
-        return movieMapper.moviesToDtos(movieRepository.findAll())
+        return movieMapper.moviesToDtos(movieRepository.findAllWithGenresAndFormats())
+    }
+
+    fun getMoviesPaged(status: MovieStatus?, activeOnly: Boolean, pageable: Pageable): Page<MovieDto> {
+        val page = when {
+            status != null && activeOnly -> movieRepository.findByActiveTrueAndStatus(status, pageable)
+            status != null && !activeOnly -> movieRepository.findByStatus(status, pageable)
+            activeOnly -> movieRepository.findByActiveTrue(pageable)
+            else -> movieRepository.findAll(pageable)
+        }
+
+        val ids = page.content.map { it.id }
+        if (ids.isEmpty()) {
+            return PageImpl(emptyList(), pageable, page.totalElements)
+        }
+        val hydrated = movieRepository.findByIdIn(ids)
+        val byId = hydrated.associateBy { it.id }
+        val ordered = ids.mapNotNull { byId[it] }
+        val dtoList = movieMapper.moviesToDtos(ordered)
+        return PageImpl(dtoList, pageable, page.totalElements)
     }
 }

@@ -3,8 +3,13 @@ package com.apibackend.AppBackend.controller
 import com.apibackend.AppBackend.dto.CreateMovieDto
 import com.apibackend.AppBackend.dto.MovieDto
 import com.apibackend.AppBackend.dto.UpdateMovieDto
+import jakarta.validation.Valid
 import com.apibackend.AppBackend.model.MovieStatus
 import com.apibackend.AppBackend.service.MovieService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,6 +32,16 @@ class MovieController(private val movieService: MovieService) {
         return ResponseEntity.ok(movies)
     }
 
+    @GetMapping("/paged")
+    fun getMoviesPaged(
+            @RequestParam(required = false) status: MovieStatus?,
+            @RequestParam(required = false, defaultValue = "true") activeOnly: Boolean,
+            @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
+    ): ResponseEntity<Page<MovieDto>> {
+        val page = movieService.getMoviesPaged(status, activeOnly, pageable)
+        return ResponseEntity.ok(page)
+    }
+
     @GetMapping("/{id}")
     fun getMovieById(@PathVariable id: Long): ResponseEntity<MovieDto> {
         val movie = movieService.getMovieById(id)
@@ -38,7 +53,7 @@ class MovieController(private val movieService: MovieService) {
     }
 
     @PostMapping
-    fun createMovie(@RequestBody createDto: CreateMovieDto): ResponseEntity<MovieDto> {
+    fun createMovie(@Valid @RequestBody createDto: CreateMovieDto): ResponseEntity<MovieDto> {
         val createdMovie = movieService.createMovie(createDto)
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie)
     }
@@ -46,7 +61,7 @@ class MovieController(private val movieService: MovieService) {
     @PutMapping("/{id}")
     fun updateMovie(
             @PathVariable id: Long,
-            @RequestBody updateDto: UpdateMovieDto
+            @Valid @RequestBody updateDto: UpdateMovieDto
     ): ResponseEntity<MovieDto> {
         val updatedMovie = movieService.updateMovie(id, updateDto)
         return if (updatedMovie != null) {
