@@ -4,6 +4,8 @@ import com.apibackend.AppBackend.dto.*
 import com.apibackend.AppBackend.model.Format
 import com.apibackend.AppBackend.model.Genre
 import com.apibackend.AppBackend.model.Movie
+import org.mapstruct.BeanMapping
+import org.mapstruct.Builder
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 
@@ -20,9 +22,8 @@ interface MovieMapper {
 
     fun moviesToDtos(movies: List<Movie>): List<MovieDto>
 
+    @BeanMapping(builder = Builder(disableBuilder = true))
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "ratingAvg", expression = "java(java.math.BigDecimal.ZERO)")
-    @Mapping(target = "ratingCount", constant = "0")
     @Mapping(target = "active", constant = "true")
     @Mapping(target = "createdAt", expression = "java(java.time.OffsetDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.OffsetDateTime.now())")

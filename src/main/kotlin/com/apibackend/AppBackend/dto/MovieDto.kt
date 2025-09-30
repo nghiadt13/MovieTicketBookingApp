@@ -1,8 +1,11 @@
 package com.apibackend.AppBackend.dto
 
 import com.apibackend.AppBackend.model.MovieStatus
+import jakarta.validation.constraints.DecimalMax
+import jakarta.validation.constraints.DecimalMin
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -32,6 +35,11 @@ data class CreateMovieDto(
         val status: MovieStatus = MovieStatus.COMING_SOON,
         val posterUrl: String? = null,
         val trailerUrl: String? = null,
+        @field:DecimalMin(value = "0.0", message = "ratingAvg must be >= 0.0")
+        @field:DecimalMax(value = "10.0", message = "ratingAvg must be <= 10.0")
+        val ratingAvg: BigDecimal = BigDecimal.ZERO,
+        @field:PositiveOrZero(message = "ratingCount must be >= 0")
+        val ratingCount: Int = 0,
         val genreIds: List<Long> = emptyList(),
         val formatIds: List<Long> = emptyList()
 )
@@ -46,6 +54,11 @@ data class UpdateMovieDto(
         val status: MovieStatus? = null,
         val posterUrl: String? = null,
         val trailerUrl: String? = null,
+        @field:DecimalMin(value = "0.0", message = "ratingAvg must be >= 0.0")
+        @field:DecimalMax(value = "10.0", message = "ratingAvg must be <= 10.0")
+        val ratingAvg: BigDecimal? = null,
+        @field:PositiveOrZero(message = "ratingCount must be >= 0")
+        val ratingCount: Int? = null,
         val genreIds: List<Long>? = null,
         val formatIds: List<Long>? = null
 )

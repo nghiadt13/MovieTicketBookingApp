@@ -15,9 +15,9 @@ data class Movie(
         @Column(columnDefinition = "TEXT") val synopsis: String? = null,
         @Column(name = "duration_min") val durationMin: Short? = null,
         @Column(name = "release_date") val releaseDate: LocalDate? = null,
-        @Enumerated(EnumType.STRING)
+        @Enumerated(EnumType.STRING) 
         @Column(name = "status", nullable = false)
-        @JdbcType(PostgreSQLEnumJdbcType::class) // <--- Thêm dòng này
+        @JdbcType(PostgreSQLEnumJdbcType::class) 
         val status: MovieStatus = MovieStatus.COMING_SOON,
         @Column(name = "poster_url", columnDefinition = "TEXT") val posterUrl: String? = null,
         @Column(name = "trailer_url", columnDefinition = "TEXT") val trailerUrl: String? = null,

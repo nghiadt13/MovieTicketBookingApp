@@ -74,6 +74,8 @@ class MovieService(
                         status = updateDto.status ?: existingMovie.status,
                         posterUrl = updateDto.posterUrl ?: existingMovie.posterUrl,
                         trailerUrl = updateDto.trailerUrl ?: existingMovie.trailerUrl,
+                        ratingAvg = updateDto.ratingAvg ?: existingMovie.ratingAvg,
+                        ratingCount = updateDto.ratingCount ?: existingMovie.ratingCount,
                         genres = genres,
                         formats = formats,
                         updatedAt = OffsetDateTime.now()
