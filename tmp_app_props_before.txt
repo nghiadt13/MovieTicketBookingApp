@@ -1,0 +1,33 @@
+# Tên ứng dụng (dùng để phân biệt)
+spring.application.name=apiBackend
+
+# Port server
+server.port=8080
+
+# Cấu hình kết nối PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/MobileApp
+spring.datasource.username=postgres
+spring.datasource.password=123
+
+# Driver (Postgres)
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Hibernate JPA
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+
+# Chế độ auto-update schema (update/create/drop)
+# update: tự động cập nhật schema theo entity
+# create-drop: tạo mới và xóa khi stop app
+# none: không can thiệp
+spring.jpa.hibernate.ddl-auto=none
+
+# Hiển thị SQL khi chạy query
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# Logging (optional)
+logging.level.org.springframework=INFO
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+
