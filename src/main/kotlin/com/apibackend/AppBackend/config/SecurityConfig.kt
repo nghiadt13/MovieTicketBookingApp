@@ -19,7 +19,7 @@ class SecurityConfig {
             .cors { it.configurationSource(corsConfigurationSource()) }
             .csrf { it.disable() }
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers("/api/movies/**").permitAll()
+                auth.requestMatchers("/api/movies/**","/api/users/**").permitAll()
                     .anyRequest().authenticated()
             }
 
@@ -33,7 +33,8 @@ class SecurityConfig {
             "http://localhost:3000",
             "http://127.0.0.1:3000",
             "http://localhost:5173",
-            "http://127.0.0.1:5173"
+            "http://127.0.0.1:5173",
+            "http://localhost:8080"
         )
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
