@@ -16,26 +16,29 @@ class SecurityConfig {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .cors { it.configurationSource(corsConfigurationSource()) }
-            .csrf { it.disable() }
-            .authorizeHttpRequests { auth ->
-                auth.requestMatchers("/api/movies/**","/api/users/**").permitAll()
-                    .anyRequest().authenticated()
-            }
+                .cors { it.configurationSource(corsConfigurationSource()) }
+                .csrf { it.disable() }
+                .authorizeHttpRequests { auth ->
+                    auth.requestMatchers("/api/movies/**", "/api/users/**", "/api/auth/**")
+                            .permitAll()
+                            .anyRequest()
+                            .authenticated()
+                }
 
         return http.build()
-    } 
+    }
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf(
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            "http://localhost:8080"
-        )
+        configuration.allowedOrigins =
+                listOf(
+                        "http://localhost:3000",
+                        "http://127.0.0.1:3000",
+                        "http://localhost:5173",
+                        "http://127.0.0.1:5173",
+                        "http://localhost:8080"
+                )
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true
@@ -45,4 +48,3 @@ class SecurityConfig {
         return source
     }
 }
-

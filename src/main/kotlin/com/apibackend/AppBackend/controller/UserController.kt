@@ -28,7 +28,7 @@ class UserController(private val userService: UserService) {
             @RequestParam(required = false, defaultValue = "true")
             activeOnly: Boolean
     ): ResponseEntity<List<UserDto>> {
-        val users =
+        val users = 
                 if (activeOnly) {
                     userService.getAllActiveUsers()
                 } else {
@@ -50,4 +50,5 @@ class UserController(private val userService: UserService) {
             ResponseEntity.notFound().build()
         }
     }
+    
 }
