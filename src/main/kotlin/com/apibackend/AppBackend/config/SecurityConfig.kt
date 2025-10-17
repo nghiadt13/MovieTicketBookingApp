@@ -19,7 +19,7 @@ class SecurityConfig {
                 .cors { it.configurationSource(corsConfigurationSource()) }
                 .csrf { it.disable() }
                 .authorizeHttpRequests { auth ->
-                    auth.requestMatchers("/api/movies/**", "/api/users/**", "/api/auth/**")
+                    auth.requestMatchers("/api/movies/**", "/api/users/**", "/api/auth/**", "api/carousel/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated()
