@@ -23,7 +23,8 @@ class SecurityConfig {
                                     "/api/movies/**",
                                     "/api/users/**",
                                     "/api/auth/**",
-                                    "api/carousel/**"
+                                    "api/carousel/**",
+                                    "/api/news/**"
                             )
                             .permitAll()
                             .anyRequest()
