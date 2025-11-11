@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class NewsService(private val newsRepository: NewsRepository, private val newsMapper: NewsMapper) {
 
     fun getLatest10News(): List<NewsDto> {
-        return newsRepository.findTop10ByOrderByUpdatedAtDesc().take(10).map {
+        return newsRepository.findTop10ByOrderByPublishedAtDesc().take(10).map {
             newsMapper.toDto(it)
         }
     }

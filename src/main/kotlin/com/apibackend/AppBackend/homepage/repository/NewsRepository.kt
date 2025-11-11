@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface NewsRepository : JpaRepository<News, Long> {
 
-    @Query("SELECT n FROM News n WHERE n.isActive = true ORDER BY n.updatedAt DESC")
-    fun findTop10ByOrderByUpdatedAtDesc(): List<News>
+    @Query("SELECT n FROM News n ORDER BY n.publishedAt DESC")
+    fun findTop10ByOrderByPublishedAtDesc(): List<News>
 }

@@ -13,10 +13,7 @@ class NewsMapper {
                 title = news.title,
                 content = news.content,
                 imageUrl = news.imageUrl,
-                author = news.author,
-                isActive = news.isActive,
-                createdAt = news.createdAt,
-                updatedAt = news.updatedAt
+                publishedAt = news.publishedAt
         )
     }
 }
