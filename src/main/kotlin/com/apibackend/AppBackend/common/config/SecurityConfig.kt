@@ -24,7 +24,8 @@ class SecurityConfig {
                                     "/api/users/**",
                                     "/api/auth/**",
                                     "api/carousel/**",
-                                    "/api/news/**"
+                                    "/api/news/**",
+                                    "/api/membership-tiers/**"
                             )
                             .permitAll()
                             .anyRequest()
