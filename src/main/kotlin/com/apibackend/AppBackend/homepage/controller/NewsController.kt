@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/news")
+@RequestMapping("/api/news") 
 @Tag(name = "News", description = "News management APIs")
 class NewsController(private val newsService: NewsService) {
 

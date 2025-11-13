@@ -34,7 +34,9 @@ class MovieService(
     }
 
     fun getMovieById(id: Long): MovieDto? {
-        return movieRepository.findByIdWithGenresAndFormats(id)?.let { movieMapper.movieToDto(it) }
+        return movieRepository.findActiveByIdWithGenresAndFormats(id)?.let {
+            movieMapper.movieToDto(it)
+        }
     }
 
     fun createMovie(createDto: CreateMovieDto): MovieDto {
