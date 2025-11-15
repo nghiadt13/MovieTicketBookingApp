@@ -1,8 +1,8 @@
-package com.apibackend.AppBackend.movies.service
+package com.apibackend.AppBackend.homepage.service
 
-import com.apibackend.AppBackend.movies.dto.NewsDto
-import com.apibackend.AppBackend.movies.mapper.NewsMapper
-import com.apibackend.AppBackend.movies.repository.NewsRepository
+import com.apibackend.AppBackend.homepage.dto.NewsDto
+import com.apibackend.AppBackend.homepage.mapper.NewsMapper
+import com.apibackend.AppBackend.homepage.repository.NewsRepository
 import org.springframework.stereotype.Service
 
 @Service

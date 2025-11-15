@@ -1,8 +1,8 @@
-package com.apibackend.AppBackend.movies.service
+package com.apibackend.AppBackend.homepage.service
 
-import com.apibackend.AppBackend.movies.dto.CarouselItemDto
-import com.apibackend.AppBackend.movies.mapper.CarouselItemMapper
-import com.apibackend.AppBackend.movies.repository.CarouselItemRepository
+import com.apibackend.AppBackend.homepage.dto.CarouselItemDto
+import com.apibackend.AppBackend.homepage.mapper.CarouselItemMapper
+import com.apibackend.AppBackend.homepage.repository.CarouselItemRepository
 import org.springframework.stereotype.Service
 
 @Service

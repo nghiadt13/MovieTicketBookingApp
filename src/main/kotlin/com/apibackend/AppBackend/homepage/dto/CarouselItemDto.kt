@@ -1,4 +1,4 @@
-package com.apibackend.AppBackend.movies.dto
+package com.apibackend.AppBackend.homepage.dto
 
 import java.time.LocalDateTime
 

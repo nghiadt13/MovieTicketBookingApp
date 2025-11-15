@@ -1,7 +1,7 @@
-package com.apibackend.AppBackend.movies.repository
+package com.apibackend.AppBackend.homepage.repository
 
-import com.apibackend.AppBackend.movies.model.Movie
-import com.apibackend.AppBackend.movies.model.MovieStatus
+import com.apibackend.AppBackend.homepage.model.Movie
+import com.apibackend.AppBackend.homepage.model.MovieStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.EntityGraph

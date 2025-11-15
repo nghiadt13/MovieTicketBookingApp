@@ -1,7 +1,7 @@
-package com.apibackend.AppBackend.movies.controller
+package com.apibackend.AppBackend.homepage.controller
 
-import com.apibackend.AppBackend.movies.dto.NewsDto
-import com.apibackend.AppBackend.movies.service.NewsService
+import com.apibackend.AppBackend.homepage.dto.NewsDto
+import com.apibackend.AppBackend.homepage.service.NewsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

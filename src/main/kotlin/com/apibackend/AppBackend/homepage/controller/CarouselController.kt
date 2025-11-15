@@ -1,7 +1,7 @@
-package com.apibackend.AppBackend.movies.controller
+package com.apibackend.AppBackend.homepage.controller
 
-import com.apibackend.AppBackend.movies.dto.CarouselItemDto
-import com.apibackend.AppBackend.movies.service.CarouselItemService
+import com.apibackend.AppBackend.homepage.dto.CarouselItemDto
+import com.apibackend.AppBackend.homepage.service.CarouselItemService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity

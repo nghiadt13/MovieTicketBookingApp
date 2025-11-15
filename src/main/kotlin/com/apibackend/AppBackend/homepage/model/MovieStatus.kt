@@ -1,4 +1,4 @@
-package com.apibackend.AppBackend.movies.model
+package com.apibackend.AppBackend.homepage.model
 
 enum class MovieStatus {
     COMING_SOON,

@@ -1,6 +1,6 @@
-package com.apibackend.AppBackend.movies.repository
+package com.apibackend.AppBackend.homepage.repository
 
-import com.apibackend.AppBackend.movies.model.Format
+import com.apibackend.AppBackend.homepage.model.Format
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

@@ -1,6 +1,6 @@
-package com.apibackend.AppBackend.movies.dto
+package com.apibackend.AppBackend.homepage.dto
 
-import com.apibackend.AppBackend.movies.model.MovieStatus
+import com.apibackend.AppBackend.homepage.model.MovieStatus
 import jakarta.validation.constraints.DecimalMax
 import jakarta.validation.constraints.DecimalMin
 import jakarta.validation.constraints.NotBlank

@@ -1,7 +1,7 @@
-package com.apibackend.AppBackend.movies.mapper
+package com.apibackend.AppBackend.homepage.mapper
 
-import com.apibackend.AppBackend.movies.dto.NewsDto
-import com.apibackend.AppBackend.movies.model.News
+import com.apibackend.AppBackend.homepage.dto.NewsDto
+import com.apibackend.AppBackend.homepage.model.News
 import org.springframework.stereotype.Component
 
 @Component

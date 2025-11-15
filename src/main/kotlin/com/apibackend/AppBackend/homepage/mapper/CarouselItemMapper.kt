@@ -1,7 +1,7 @@
-package com.apibackend.AppBackend.movies.mapper
+package com.apibackend.AppBackend.homepage.mapper
 
-import com.apibackend.AppBackend.movies.dto.CarouselItemDto
-import com.apibackend.AppBackend.movies.model.CarouselItem
+import com.apibackend.AppBackend.homepage.dto.CarouselItemDto
+import com.apibackend.AppBackend.homepage.model.CarouselItem
 import org.springframework.stereotype.Component
 
 @Component

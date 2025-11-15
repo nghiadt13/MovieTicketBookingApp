@@ -1,13 +1,13 @@
-package com.apibackend.AppBackend.movies.service
+package com.apibackend.AppBackend.homepage.service
 
-import com.apibackend.AppBackend.movies.dto.CreateMovieDto
-import com.apibackend.AppBackend.movies.dto.MovieDto
-import com.apibackend.AppBackend.movies.dto.UpdateMovieDto
-import com.apibackend.AppBackend.movies.mapper.MovieMapper
-import com.apibackend.AppBackend.movies.model.MovieStatus
-import com.apibackend.AppBackend.movies.repository.FormatRepository
-import com.apibackend.AppBackend.movies.repository.GenreRepository
-import com.apibackend.AppBackend.movies.repository.MovieRepository
+import com.apibackend.AppBackend.homepage.dto.CreateMovieDto
+import com.apibackend.AppBackend.homepage.dto.MovieDto
+import com.apibackend.AppBackend.homepage.dto.UpdateMovieDto
+import com.apibackend.AppBackend.homepage.mapper.MovieMapper
+import com.apibackend.AppBackend.homepage.model.MovieStatus
+import com.apibackend.AppBackend.homepage.repository.FormatRepository
+import com.apibackend.AppBackend.homepage.repository.GenreRepository
+import com.apibackend.AppBackend.homepage.repository.MovieRepository
 import java.time.OffsetDateTime
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl

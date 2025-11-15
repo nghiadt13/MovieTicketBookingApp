@@ -1,9 +1,9 @@
-package com.apibackend.AppBackend.movies.mapper
+package com.apibackend.AppBackend.homepage.mapper
 
-import com.apibackend.AppBackend.movies.dto.*
-import com.apibackend.AppBackend.movies.model.Format
-import com.apibackend.AppBackend.movies.model.Genre
-import com.apibackend.AppBackend.movies.model.Movie
+import com.apibackend.AppBackend.homepage.dto.*
+import com.apibackend.AppBackend.homepage.model.Format
+import com.apibackend.AppBackend.homepage.model.Genre
+import com.apibackend.AppBackend.homepage.model.Movie
 import org.mapstruct.BeanMapping
 import org.mapstruct.Builder
 import org.mapstruct.Mapper
@@ -30,12 +30,12 @@ interface MovieMapper {
     @Mapping(
             target = "genres",
             expression =
-                    "java(new java.util.HashSet<com.apibackend.AppBackend.movies.model.Genre>())"
+                    "java(new java.util.HashSet<com.apibackend.AppBackend.homepage.model.Genre>())"
     )
     @Mapping(
             target = "formats",
             expression =
-                    "java(new java.util.HashSet<com.apibackend.AppBackend.movies.model.Format>())"
+                    "java(new java.util.HashSet<com.apibackend.AppBackend.homepage.model.Format>())"
     )
     fun createDtoToMovie(createDto: CreateMovieDto): Movie
 }

@@ -1,11 +1,11 @@
-package com.apibackend.AppBackend.movies.controller
+package com.apibackend.AppBackend.homepage.controller
 
 import com.apibackend.AppBackend.common.config.ApiError
-import com.apibackend.AppBackend.movies.dto.CreateMovieDto
-import com.apibackend.AppBackend.movies.dto.MovieDto
-import com.apibackend.AppBackend.movies.dto.UpdateMovieDto
-import com.apibackend.AppBackend.movies.model.MovieStatus
-import com.apibackend.AppBackend.movies.service.MovieService
+import com.apibackend.AppBackend.homepage.dto.CreateMovieDto
+import com.apibackend.AppBackend.homepage.dto.MovieDto
+import com.apibackend.AppBackend.homepage.dto.UpdateMovieDto
+import com.apibackend.AppBackend.homepage.model.MovieStatus
+import com.apibackend.AppBackend.homepage.service.MovieService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema

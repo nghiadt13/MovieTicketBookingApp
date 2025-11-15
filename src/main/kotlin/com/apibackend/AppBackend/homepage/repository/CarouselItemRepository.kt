@@ -1,6 +1,6 @@
-package com.apibackend.AppBackend.movies.repository
+package com.apibackend.AppBackend.homepage.repository
 
-import com.apibackend.AppBackend.movies.model.CarouselItem
+import com.apibackend.AppBackend.homepage.model.CarouselItem
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
