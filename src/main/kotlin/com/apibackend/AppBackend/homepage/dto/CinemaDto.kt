@@ -11,5 +11,6 @@ data class CinemaDto(
         val phoneNumber: String?,
         val email: String?,
         val latitude: BigDecimal?,
-        val longitude: BigDecimal?
+        val longitude: BigDecimal?,
+        val imageUrl: String?
 )

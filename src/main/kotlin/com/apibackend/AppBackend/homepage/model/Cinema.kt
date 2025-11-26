@@ -16,6 +16,7 @@ data class Cinema(
         @Column val email: String? = null,
         @Column(precision = 10, scale = 8) val latitude: BigDecimal? = null,
         @Column(precision = 11, scale = 8) val longitude: BigDecimal? = null,
+        @Column(name = "image_url", columnDefinition = "TEXT") val imageUrl: String? = null,
         @Column(name = "is_active") val active: Boolean = true,
         @Column(name = "created_at") val createdAt: OffsetDateTime = OffsetDateTime.now(),
         @Column(name = "updated_at") val updatedAt: OffsetDateTime = OffsetDateTime.now()

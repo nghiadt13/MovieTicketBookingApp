@@ -18,6 +18,16 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Cinemas", description = "Cinema endpoints: list cinemas showing a specific movie")
 class CinemaController(private val cinemaService: CinemaService) {
 
+        @GetMapping("/all")
+        @Operation(
+                summary = "Get all active cinemas",
+                description = "Returns all active cinemas regardless of movie showtimes."
+        )
+        @ApiResponse(responseCode = "200", description = "Successful retrieval")
+        fun getAllCinemas(): ResponseEntity<List<CinemaDto>> {
+                return ResponseEntity.ok(cinemaService.getAllActiveCinemas())
+        }
+
         @GetMapping
         @Operation(
                 summary = "Get cinemas by movie",
