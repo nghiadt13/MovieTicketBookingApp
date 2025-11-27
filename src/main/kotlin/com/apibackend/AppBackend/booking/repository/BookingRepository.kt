@@ -28,6 +28,19 @@ interface BookingRepository : JpaRepository<Booking, Long> {
 
     @Query("""
         SELECT b FROM Booking b
+        JOIN FETCH b.showtime s
+        JOIN FETCH s.movie m
+        LEFT JOIN FETCH m.genres
+        LEFT JOIN FETCH m.formats
+        JOIN FETCH s.screen sc
+        JOIN FETCH sc.cinema
+        LEFT JOIN FETCH s.format
+        WHERE b.id = :id
+    """)
+    fun findByIdWithFullDetails(@Param("id") id: Long): Booking?
+
+    @Query("""
+        SELECT b FROM Booking b
         WHERE b.showtime.id = :showtimeId
         AND b.status IN ('PENDING', 'CONFIRMED')
     """)
