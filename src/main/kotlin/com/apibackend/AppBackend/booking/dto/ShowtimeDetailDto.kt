@@ -2,6 +2,7 @@ package com.apibackend.AppBackend.booking.dto
 
 import com.apibackend.AppBackend.booking.model.SeatType
 import com.apibackend.AppBackend.homepage.model.MovieStatus
+import com.apibackend.AppBackend.homepage.model.ShowtimeStatus
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -19,9 +20,11 @@ data class ShowtimeDto(
         val id: Long,
         val movieId: Long,
         val screenId: Long,
+        val formatId: Long?,
+        val formatCode: String?,
         val startTime: OffsetDateTime,
         val endTime: OffsetDateTime,
-        val status: String,
+        val status: ShowtimeStatus,
         val availableSeats: Short?,
         val isActive: Boolean,
         val createdAt: OffsetDateTime,

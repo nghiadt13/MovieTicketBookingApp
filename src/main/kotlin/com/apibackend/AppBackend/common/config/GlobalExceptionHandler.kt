@@ -23,6 +23,22 @@ data class ApiError(
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
+        // Handle all ApiException subclasses
+        @ExceptionHandler(com.apibackend.AppBackend.common.exception.ApiException::class)
+        fun handleApiException(
+                ex: com.apibackend.AppBackend.common.exception.ApiException,
+                request: HttpServletRequest
+        ): ResponseEntity<ApiError> {
+                val body =
+                        ApiError(
+                                status = ex.status.value(),
+                                error = ex.status.reasonPhrase,
+                                message = ex.message,
+                                path = request.requestURI
+                        )
+                return ResponseEntity.status(ex.status).body(body)
+        }
+
         @ExceptionHandler(MethodArgumentNotValidException::class)
         fun handleValidation(
                 ex: MethodArgumentNotValidException,

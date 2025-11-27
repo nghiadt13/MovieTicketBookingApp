@@ -17,6 +17,8 @@ class ShowtimeMapper {
                     id = showtime.id,
                     movieId = showtime.movie.id,
                     screenId = showtime.screen.id,
+                    formatId = showtime.format?.id,
+                    formatCode = showtime.format?.code,
                     startTime = showtime.startTime,
                     endTime = showtime.endTime,
                     status = showtime.status,
