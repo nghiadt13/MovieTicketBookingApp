@@ -14,7 +14,7 @@ open class ApiException(
 /**
  * Exception khi không tìm thấy resource
  */
-class ResourceNotFoundException(
+open class ResourceNotFoundException(
     message: String,
     errorCode: String? = "RESOURCE_NOT_FOUND"
 ) : ApiException(HttpStatus.NOT_FOUND, message, errorCode)
@@ -22,7 +22,7 @@ class ResourceNotFoundException(
 /**
  * Exception khi request không hợp lệ
  */
-class BadRequestException(
+open class BadRequestException(
     message: String,
     errorCode: String? = "BAD_REQUEST"
 ) : ApiException(HttpStatus.BAD_REQUEST, message, errorCode)

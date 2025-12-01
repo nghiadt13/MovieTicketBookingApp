@@ -8,13 +8,13 @@ import org.mapstruct.Named
 import java.math.BigDecimal
 
 @Mapper(componentModel = "spring")
-interface ComboMapper {
+abstract class ComboMapper {
 
     @Mapping(source = "id", target = "id", qualifiedByName = ["longToString"])
     @Mapping(source = "price", target = "price", qualifiedByName = ["bigDecimalToLong"])
-    fun comboToDto(combo: Combo): ComboDto
+    abstract fun comboToDto(combo: Combo): ComboDto
 
-    fun combosToDtos(combos: List<Combo>): List<ComboDto>
+    abstract fun combosToDtos(combos: List<Combo>): List<ComboDto>
 
     @Named("longToString")
     fun longToString(id: Long): String = id.toString()
