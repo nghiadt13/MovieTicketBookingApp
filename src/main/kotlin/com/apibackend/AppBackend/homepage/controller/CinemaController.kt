@@ -1,6 +1,7 @@
 package com.apibackend.AppBackend.homepage.controller
 
 import com.apibackend.AppBackend.homepage.dto.CinemaDto
+import com.apibackend.AppBackend.homepage.dto.CinemaWithShowtimeStatusDto
 import com.apibackend.AppBackend.homepage.service.CinemaService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -30,9 +31,10 @@ class CinemaController(private val cinemaService: CinemaService) {
 
         @GetMapping
         @Operation(
-                summary = "Get cinemas by movie",
+                summary = "Get cinemas by movie with showtime status",
                 description =
-                        "Returns all active cinemas that are currently showing the specified movie. " +
+                        "Returns all active cinemas with information about whether they have showtimes for the specified movie. " +
+                                "Each cinema includes hasShowtimes (boolean) and message (if no showtimes available). " +
                                 "Used when user clicks 'Book Ticket' from movie detail page."
         )
         @ApiResponses(
@@ -49,7 +51,7 @@ class CinemaController(private val cinemaService: CinemaService) {
                                                                                 schema =
                                                                                         Schema(
                                                                                                 implementation =
-                                                                                                        CinemaDto::class
+                                                                                                        CinemaWithShowtimeStatusDto::class
                                                                                         )
                                                                         )
                                                         )]
@@ -69,8 +71,8 @@ class CinemaController(private val cinemaService: CinemaService) {
                 @Parameter(description = "Filter by city name (optional)")
                 @RequestParam(required = false)
                 city: String?
-        ): ResponseEntity<List<CinemaDto>> {
-                val cinemas = cinemaService.getCinemasByMovieId(movieId)
+        ): ResponseEntity<List<CinemaWithShowtimeStatusDto>> {
+                val cinemas = cinemaService.getCinemasWithShowtimeStatus(movieId)
 
                 val filteredCinemas =
                         if (city != null) {
