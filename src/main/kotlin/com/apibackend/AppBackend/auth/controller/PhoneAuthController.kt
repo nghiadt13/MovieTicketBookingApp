@@ -1,6 +1,7 @@
 package com.apibackend.AppBackend.auth.controller
 
 import com.apibackend.AppBackend.auth.dto.phone.*
+import com.apibackend.AppBackend.auth.service.JwtService
 import com.apibackend.AppBackend.auth.service.OtpService
 import com.apibackend.AppBackend.auth.service.OtpVerifyResult
 import io.swagger.v3.oas.annotations.Operation
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth/phone")
 @Tag(name = "Phone OTP Authentication", description = "Phone number login with OTP verification")
 class PhoneAuthController(
-    private val otpService: OtpService
+    private val otpService: OtpService,
+    private val jwtService: JwtService
 ) {
 
     @PostMapping("/request-otp")
@@ -63,10 +65,11 @@ class PhoneAuthController(
         return when (val result = otpService.verifyOtp(request)) {
             is OtpVerifyResult.Success -> {
                 val user = result.user
+                val roles = user.roles.map { it.name.name }
 
-                // Generate JWT token
-                val accessToken = generateAccessToken(user.id!!)
-                val refreshToken = generateRefreshToken(user.id!!)
+                // Generate JWT tokens
+                val accessToken = jwtService.generateAccessToken(user.id!!, user.email, roles)
+                val refreshToken = jwtService.generateRefreshToken(user.id!!)
 
                 val response = PhoneLoginResponseDto(
                     success = true,
@@ -79,12 +82,12 @@ class PhoneAuthController(
                             displayName = user.displayName,
                             avatarUrl = user.avatarUrl,
                             isPhoneVerified = user.phoneNumberVerifiedAt != null,
-                            roles = user.roles.map { it.name.name }
+                            roles = roles
                         ),
                         token = TokenDto(
                             accessToken = accessToken,
                             refreshToken = refreshToken,
-                            expiresIn = 3600
+                            expiresIn = jwtService.getAccessTokenExpirySeconds()
                         )
                     )
                 )
@@ -158,13 +161,4 @@ class PhoneAuthController(
         return requestOtp(request)
     }
 
-    // ========== JWT Helper Methods ==========
-    // TODO: Implement proper JWT generation using existing JWT service
-    private fun generateAccessToken(userId: Long): String {
-        return "access-token-$userId-${System.currentTimeMillis()}"
-    }
-
-    private fun generateRefreshToken(userId: Long): String {
-        return "refresh-token-$userId-${System.currentTimeMillis()}"
-    }
 }

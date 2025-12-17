@@ -12,16 +12,19 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class AuthService(private val userRepository: UserRepository, private val userMapper: UserMapper) {
+class AuthService(
+    private val userRepository: UserRepository,
+    private val userMapper: UserMapper,
+    private val jwtService: JwtService
+) {
     private val passwordEncoder = BCryptPasswordEncoder()
 
     fun login(loginRequest: LoginRequest): LoginResponse {
-        val user =
-                findUserByUsername(loginRequest.username)
-                        ?: return LoginResponse(
-                                success = false,
-                                message = "Invalid username or password"
-                        )
+        val user = findUserByUsername(loginRequest.username)
+            ?: return LoginResponse(
+                success = false,
+                message = "Invalid username or password"
+            )
 
         if (!user.isActive) {
             return LoginResponse(success = false, message = "Account is inactive")
@@ -35,17 +38,18 @@ class AuthService(private val userRepository: UserRepository, private val userMa
         userRepository.save(user)
 
         val userDto = userMapper.toDto(user)
-        val token = "temporary-token-${user.id}"
+        val roles = user.roles.map { it.name.name }
+        val accessToken = jwtService.generateAccessToken(user.id!!, user.email, roles)
 
         return LoginResponse(
-                success = true,
-                message = "Login successful",
-                user = userDto,
-                token = token
+            success = true,
+            message = "Login successful",
+            user = userDto,
+            token = accessToken
         )
     }
 
-    private fun findUserByUsername(username: String): User? {
+    fun findUserByUsername(username: String): User? {
         val byEmail = userRepository.findByEmail(username)
         if (byEmail.isPresent) {
             return byEmail.get()
@@ -55,12 +59,16 @@ class AuthService(private val userRepository: UserRepository, private val userMa
         return if (byPhone.isPresent) byPhone.get() else null
     }
 
-    private fun verifyPassword(rawPassword: String, passwordHash: String?): Boolean {
+    fun verifyPassword(rawPassword: String, passwordHash: String?): Boolean {
         if (passwordHash == null) return false
         return try {
             passwordEncoder.matches(rawPassword, passwordHash)
         } catch (e: Exception) {
             false
         }
+    }
+
+    fun hashPassword(rawPassword: String): String {
+        return passwordEncoder.encode(rawPassword)
     }
 }
