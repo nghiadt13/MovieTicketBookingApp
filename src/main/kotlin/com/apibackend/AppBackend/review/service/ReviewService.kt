@@ -206,10 +206,22 @@ class ReviewService(
                 }
         }
 
+        /**
+         * Cập nhật rating trung bình và số lượng reviews của phim
+         */
         private fun updateMovieRating(movieId: Long) {
-                // TODO: Calculate and update movie rating_avg and rating_count
-                // This requires querying all active reviews for the movie
-                // and updating the movie entity
+                val movie = movieRepository.findById(movieId).orElse(null) ?: return
+                
+                // Tính rating trung bình và số lượng reviews
+                val avgRating = reviewRepository.calculateAverageRating(movieId) ?: 0.0
+                val reviewCount = reviewRepository.countByMovieId(movieId)
+                
+                // Update movie entity
+                val updatedMovie = movie.copy(
+                        ratingAvg = java.math.BigDecimal.valueOf(avgRating).setScale(1, java.math.RoundingMode.HALF_UP),
+                        ratingCount = reviewCount
+                )
+                movieRepository.save(updatedMovie)
         }
 
         private fun mapToResponse(review: MovieReview): ReviewResponse {

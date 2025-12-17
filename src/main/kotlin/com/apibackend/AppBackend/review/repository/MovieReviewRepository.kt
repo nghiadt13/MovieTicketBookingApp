@@ -63,4 +63,30 @@ interface MovieReviewRepository : JpaRepository<MovieReview, Long> {
     """
     )
     fun findByIdAndNotDeleted(@Param("reviewId") reviewId: Long): MovieReview?
+
+    /**
+     * Tính trung bình rating của phim (chỉ tính reviews APPROVED và chưa xóa)
+     */
+    @Query(
+            """
+        SELECT AVG(r.rating) FROM MovieReview r
+        WHERE r.movie.id = :movieId
+        AND r.status = 'APPROVED'
+        AND r.deletedAt IS NULL
+    """
+    )
+    fun calculateAverageRating(@Param("movieId") movieId: Long): Double?
+
+    /**
+     * Đếm số lượng reviews của phim
+     */
+    @Query(
+            """
+        SELECT COUNT(r) FROM MovieReview r
+        WHERE r.movie.id = :movieId
+        AND r.status = 'APPROVED'
+        AND r.deletedAt IS NULL
+    """
+    )
+    fun countByMovieId(@Param("movieId") movieId: Long): Int
 }

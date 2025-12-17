@@ -4,19 +4,31 @@ import com.apibackend.AppBackend.review.dto.CreateReviewRequest
 import com.apibackend.AppBackend.review.dto.ReviewResponse
 import com.apibackend.AppBackend.review.dto.UpdateReviewRequest
 import com.apibackend.AppBackend.review.service.ReviewService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Reviews", description = "Movie review endpoints")
 class ReviewController(private val reviewService: ReviewService) {
 
-    /** Get reviews for a movie GET /api/movies/{movieId}/reviews */
+    /**
+     * Lấy userId từ JWT token trong SecurityContext
+     */
+    private fun getCurrentUserId(): Long {
+        val authentication = SecurityContextHolder.getContext().authentication
+        return authentication.principal as Long
+    }
+
     @GetMapping("/movies/{movieId}/reviews")
+    @Operation(summary = "Get reviews for a movie")
     fun getMovieReviews(
             @PathVariable movieId: Long,
             @RequestParam(defaultValue = "recent") sortBy: String,
@@ -28,54 +40,45 @@ class ReviewController(private val reviewService: ReviewService) {
         return ResponseEntity.ok(reviews)
     }
 
-    /**
-     * Create a new review POST /api/movies/{movieId}/reviews Requires authentication (userId from
-     * session/token)
-     */
     @PostMapping("/movies/{movieId}/reviews")
+    @Operation(summary = "Create a new review", description = "Requires authentication via JWT token")
     fun createReview(
             @PathVariable movieId: Long,
-            @Valid @RequestBody request: CreateReviewRequest,
-            @RequestHeader("X-User-Id") userId: Long // Temporary: should come from JWT token
+            @Valid @RequestBody request: CreateReviewRequest
     ): ResponseEntity<ReviewResponse> {
         // Validate movieId matches request
         if (movieId != request.movieId) {
             return ResponseEntity.badRequest().build()
         }
 
+        val userId = getCurrentUserId()
         val review = reviewService.createReview(userId, request)
         return ResponseEntity.status(HttpStatus.CREATED).body(review)
     }
 
-    /** Update a review PUT /api/reviews/{reviewId} Requires authentication */
     @PutMapping("/reviews/{reviewId}")
+    @Operation(summary = "Update a review", description = "Only owner can update their review")
     fun updateReview(
             @PathVariable reviewId: Long,
-            @Valid @RequestBody request: UpdateReviewRequest,
-            @RequestHeader("X-User-Id") userId: Long
+            @Valid @RequestBody request: UpdateReviewRequest
     ): ResponseEntity<ReviewResponse> {
+        val userId = getCurrentUserId()
         val review = reviewService.updateReview(userId, reviewId, request)
         return ResponseEntity.ok(review)
     }
 
-    /** Delete a review (soft delete) DELETE /api/reviews/{reviewId} Requires authentication */
     @DeleteMapping("/reviews/{reviewId}")
-    fun deleteReview(
-            @PathVariable reviewId: Long,
-            @RequestHeader("X-User-Id") userId: Long
-    ): ResponseEntity<Map<String, String>> {
+    @Operation(summary = "Delete a review (soft delete)", description = "Only owner can delete their review")
+    fun deleteReview(@PathVariable reviewId: Long): ResponseEntity<Map<String, String>> {
+        val userId = getCurrentUserId()
         reviewService.deleteReview(userId, reviewId)
         return ResponseEntity.ok(mapOf("message" to "Review deleted successfully"))
     }
 
-    /**
-     * Toggle helpful vote on a review POST /api/reviews/{reviewId}/helpful Requires authentication
-     */
     @PostMapping("/reviews/{reviewId}/helpful")
-    fun toggleHelpfulVote(
-            @PathVariable reviewId: Long,
-            @RequestHeader("X-User-Id") userId: Long
-    ): ResponseEntity<Map<String, Any>> {
+    @Operation(summary = "Toggle helpful vote on a review")
+    fun toggleHelpfulVote(@PathVariable reviewId: Long): ResponseEntity<Map<String, Any>> {
+        val userId = getCurrentUserId()
         val result = reviewService.toggleHelpfulVote(userId, reviewId)
         return ResponseEntity.ok(result)
     }
