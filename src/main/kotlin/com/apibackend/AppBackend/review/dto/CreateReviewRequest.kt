@@ -6,9 +6,8 @@ data class CreateReviewRequest(
         @field:NotNull(message = "Movie ID is required")
         @field:Positive(message = "Movie ID must be positive")
         val movieId: Long,
-        @field:NotNull(message = "Booking ID is required")
         @field:Positive(message = "Booking ID must be positive")
-        val bookingId: Long,
+        val bookingId: Long? = null,  // Optional - nếu null thì không validate booking
         @field:NotNull(message = "Rating is required")
         @field:Min(value = 1, message = "Rating must be between 1 and 10")
         @field:Max(value = 10, message = "Rating must be between 1 and 10")

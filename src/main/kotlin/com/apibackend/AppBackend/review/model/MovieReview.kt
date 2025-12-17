@@ -17,7 +17,7 @@ data class MovieReview(
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "user_id", nullable = false)
         val user: User,
-        @Column(name = "booking_id", nullable = false) val bookingId: Long,
+        @Column(name = "booking_id", nullable = true) val bookingId: Long? = null,
         @Column(nullable = false) val rating: Short,
         @Column(name = "comment_text", columnDefinition = "TEXT") val commentText: String? = null,
         @Enumerated(EnumType.STRING)

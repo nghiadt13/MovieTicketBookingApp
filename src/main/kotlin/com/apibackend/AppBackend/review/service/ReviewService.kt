@@ -43,12 +43,14 @@ class ReviewService(
                         throw ReviewAlreadyExistsException("You have already reviewed this movie")
                 }
 
-                // Validate booking
-                bookingValidationService.validateBookingForReview(
-                        userId,
-                        request.bookingId,
-                        request.movieId
-                )
+                // Validate booking (chỉ khi có bookingId)
+                if (request.bookingId != null) {
+                        bookingValidationService.validateBookingForReview(
+                                userId,
+                                request.bookingId,
+                                request.movieId
+                        )
+                }
 
                 // Create review
                 val review =
