@@ -1,7 +1,6 @@
 package com.apibackend.AppBackend.auth.controller
 
-import com.apibackend.AppBackend.auth.dto.LoginRequest
-import com.apibackend.AppBackend.auth.dto.LoginResponse
+import com.apibackend.AppBackend.auth.dto.*
 import com.apibackend.AppBackend.auth.service.AuthService
 import com.apibackend.AppBackend.common.config.ApiError
 import io.swagger.v3.oas.annotations.Operation
@@ -57,6 +56,30 @@ class AuthController(private val authService: AuthService) {
     )
     fun login(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse> {
         val response = authService.login(loginRequest)
+        return ResponseEntity.ok(response)
+    }
+
+    @PostMapping("/register")
+    @Operation(
+        summary = "User registration",
+        description = "Register new user with email/phone and password. Auto login on success."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Registration successful or failed",
+                content = [Content(schema = Schema(implementation = RegisterResponse::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Validation error",
+                content = [Content(schema = Schema(implementation = ApiError::class))]
+            )
+        ]
+    )
+    fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<RegisterResponse> {
+        val response = authService.register(request)
         return ResponseEntity.ok(response)
     }
 }
