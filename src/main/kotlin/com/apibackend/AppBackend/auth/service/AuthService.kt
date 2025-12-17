@@ -111,8 +111,8 @@ class AuthService(
             }
         }
 
-        // Lấy role USER mặc định
-        val userRole = roleRepository.findByName(UserRole.ROLE_USER).orElse(null)
+        // Lấy role USER mặc định (truyền String để native query cast sang enum)
+        val userRole = roleRepository.findRoleByNameString(UserRole.ROLE_USER.name).orElse(null)
             ?: return RegisterResponse(
                 success = false,
                 message = "System error: Default role not found"
